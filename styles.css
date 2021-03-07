@@ -14,7 +14,7 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   box-sizing: border-box;
-  color: #e8e6ff;
+  color: white;
 }
 router-outlet + * {
   display: flex;
@@ -27,7 +27,7 @@ router-outlet + * {
 .glass-window {
   background-color: rgba(0, 0, 0, 0.8);
   border-radius: 15px;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+  box-shadow: 0 0 10px rgba(56, 55, 55, 0.664);
 }
 .flex-cont {
   display: inline-flex;
@@ -35,15 +35,12 @@ router-outlet + * {
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
-  padding: 4vh 7vw;
+  padding: 4vh 10vw;
   margin: 5px;
 }
 body {
   margin: 0;
-  background-image: url('background.jpg');
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-attachment: fixed;
+  background-color: rgba(12, 12, 12, 0.945);
 }
 a {
   cursor: pointer;
