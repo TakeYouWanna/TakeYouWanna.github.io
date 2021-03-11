@@ -98,11 +98,12 @@ function RegisterPageComponent_form_0_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵproperty"]("disabled", ctx_r0.registerForm.invalid);
 } }
 class RegisterPageComponent {
-    constructor(userDataService, firebaseAuthService, formBuilder, router) {
+    constructor(userDataService, firebaseAuthService, formBuilder, router, changeDetectorRef) {
         this.userDataService = userDataService;
         this.firebaseAuthService = firebaseAuthService;
         this.formBuilder = formBuilder;
         this.router = router;
+        this.changeDetectorRef = changeDetectorRef;
         this.user$ = this.userDataService.user$;
         this.error = '';
         this.registerForm = this.formBuilder.group({
@@ -121,14 +122,16 @@ class RegisterPageComponent {
             }, (err) => {
                 this.error = err.message;
                 this.registerForm.reset();
+                this.changeDetectorRef.detectChanges();
             });
         }
         else {
             this.error = 'Passwords do not match';
+            this.changeDetectorRef.detectChanges();
         }
     }
 }
-RegisterPageComponent.ɵfac = function RegisterPageComponent_Factory(t) { return new (t || RegisterPageComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdirectiveInject"](src_app_shared_services_data_user_data_service__WEBPACK_IMPORTED_MODULE_2__["UserDataService"]), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdirectiveInject"](src_app_shared_services_firebase_firebase_auth_service__WEBPACK_IMPORTED_MODULE_3__["FirebaseAuthService"]), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdirectiveInject"](_angular_forms__WEBPACK_IMPORTED_MODULE_0__["FormBuilder"]), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_4__["Router"])); };
+RegisterPageComponent.ɵfac = function RegisterPageComponent_Factory(t) { return new (t || RegisterPageComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdirectiveInject"](src_app_shared_services_data_user_data_service__WEBPACK_IMPORTED_MODULE_2__["UserDataService"]), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdirectiveInject"](src_app_shared_services_firebase_firebase_auth_service__WEBPACK_IMPORTED_MODULE_3__["FirebaseAuthService"]), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdirectiveInject"](_angular_forms__WEBPACK_IMPORTED_MODULE_0__["FormBuilder"]), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_4__["Router"]), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdirectiveInject"](_angular_core__WEBPACK_IMPORTED_MODULE_1__["ChangeDetectorRef"])); };
 RegisterPageComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineComponent"]({ type: RegisterPageComponent, selectors: [["app-register-page"]], decls: 2, vars: 3, consts: [[3, "formGroup", "submit", 4, "ngIf"], [3, "formGroup", "submit"], [1, "glass-window", "flex-cont"], ["class", "error", 4, "ngIf"], ["for", "Login"], ["type", "email", "id", "Login", "formControlName", "email"], ["for", "Password"], ["type", "password", "required", "", "id", "Password", "formControlName", "password"], ["for", "PasswordConfirm"], ["type", "password", "required", "", "id", "PasswordConfirm", "formControlName", "passConfirm"], ["type", "submit", 3, "disabled"], [1, "error"]], template: function RegisterPageComponent_Template(rf, ctx) { if (rf & 1) {
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtemplate"](0, RegisterPageComponent_form_0_Template, 16, 3, "form", 0);
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵpipe"](1, "async");
@@ -247,11 +250,12 @@ function LoginPageComponent_form_0_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵproperty"]("disabled", ctx_r0.loginForm.invalid);
 } }
 class LoginPageComponent {
-    constructor(firebaseAuthService, formBuilder, userDataService, router) {
+    constructor(firebaseAuthService, formBuilder, userDataService, router, changeDetectorRef) {
         this.firebaseAuthService = firebaseAuthService;
         this.formBuilder = formBuilder;
         this.userDataService = userDataService;
         this.router = router;
+        this.changeDetectorRef = changeDetectorRef;
         this.user$ = this.userDataService.user$;
         this.error = '';
         this.loginForm = this.formBuilder.group({
@@ -268,10 +272,11 @@ class LoginPageComponent {
         }, (err) => {
             this.error = err.message;
             this.loginForm.reset();
+            this.changeDetectorRef.detectChanges();
         });
     }
 }
-LoginPageComponent.ɵfac = function LoginPageComponent_Factory(t) { return new (t || LoginPageComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdirectiveInject"](_shared_services_firebase_firebase_auth_service__WEBPACK_IMPORTED_MODULE_2__["FirebaseAuthService"]), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdirectiveInject"](_angular_forms__WEBPACK_IMPORTED_MODULE_0__["FormBuilder"]), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdirectiveInject"](src_app_shared_services_data_user_data_service__WEBPACK_IMPORTED_MODULE_3__["UserDataService"]), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_4__["Router"])); };
+LoginPageComponent.ɵfac = function LoginPageComponent_Factory(t) { return new (t || LoginPageComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdirectiveInject"](_shared_services_firebase_firebase_auth_service__WEBPACK_IMPORTED_MODULE_2__["FirebaseAuthService"]), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdirectiveInject"](_angular_forms__WEBPACK_IMPORTED_MODULE_0__["FormBuilder"]), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdirectiveInject"](src_app_shared_services_data_user_data_service__WEBPACK_IMPORTED_MODULE_3__["UserDataService"]), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_4__["Router"]), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdirectiveInject"](_angular_core__WEBPACK_IMPORTED_MODULE_1__["ChangeDetectorRef"])); };
 LoginPageComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineComponent"]({ type: LoginPageComponent, selectors: [["app-login-page"]], decls: 2, vars: 3, consts: [[3, "formGroup", "submit", 4, "ngIf"], [3, "formGroup", "submit"], [1, "glass-window", "flex-cont"], ["class", "error", 4, "ngIf"], ["for", "Login"], ["type", "email", "id", "Login", "formControlName", "email"], ["type", "password", "required", "", "id", "Password", "formControlName", "password"], ["type", "submit", 3, "disabled"], ["for", "regist-button"], ["routerLink", "registration"], [1, "error"]], template: function LoginPageComponent_Template(rf, ctx) { if (rf & 1) {
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtemplate"](0, LoginPageComponent_form_0_Template, 18, 3, "form", 0);
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵpipe"](1, "async");
