@@ -7,7 +7,7 @@
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! D:\Angular\Innowise-Practice-Level1\src\polyfills.ts */"hN/g");
+module.exports = __webpack_require__(/*! D:\Angular\Innowise-lab-internship-level2\src\polyfills.ts */"hN/g");
 
 
 /***/ }),
@@ -38,7 +38,7 @@ __webpack_require__.r(__webpack_exports__);
  *
  * Learn more in https://angular.io/guide/browser-support
  */
-/***************************************************************************************************
+/** *************************************************************************************************
  * BROWSER POLYFILLS
  */
 /**
@@ -74,11 +74,11 @@ __webpack_require__.r(__webpack_exports__);
  *  (window as any).__Zone_enable_cross_context_check = true;
  *
  */
-/***************************************************************************************************
+/** *************************************************************************************************
  * Zone JS is required by default for Angular itself.
  */
  // Included with Angular CLI.
-/***************************************************************************************************
+/** *************************************************************************************************
  * APPLICATION IMPORTS
  */
 

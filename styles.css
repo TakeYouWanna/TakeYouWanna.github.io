@@ -1,87 +1,34 @@
-@import url(https://fonts.googleapis.com/css2?family=Roboto:ital@1&display=swap);
-
-/*!* Global Styles *!*/
-::-webkit-scrollbar {
-  width: 0px;
-  height: 0px;
+@import url(https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,400;1,700&display=swap);
+.coloredBackground {
+  background-color: #5bc79e;
+  color: white;
 }
-::-webkit-scrollbar-button {
-  width: 0px;
-  height: 0px;
+.coloredText {
+  color: #5bc79e;
+}
+body {
+  background-color: #c1bdba;
+  margin: 0;
+  min-width: 762px;
+  box-sizing: content-box;
 }
 * {
-  font-family: "Roboto", sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  box-sizing: border-box;
   color: white;
+  font-family: "Roboto Condensed", sans-serif;
+}
+.window-div {
+  background-color: #28323b;
+  box-shadow: 0 0 15px #28323b;
 }
 router-outlet + * {
   display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  justify-content: space-around;
-  align-items: center;
-  margin-top: 5vh;
-}
-.glass-window {
-  background-color: rgba(0, 0, 0, 0.8);
-  border-radius: 15px;
-  box-shadow: 0 0 10px rgba(56, 55, 55, 0.664);
-}
-.flex-cont {
-  display: inline-flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  box-sizing: border-box;
-  padding: 4vh 10vw;
-  margin: 5px;
-}
-body {
-  margin: 0;
-  background-color: rgba(12, 12, 12, 0.945);
+  flex-direction: row;
+  flex-wrap: wrap;
 }
 a {
-  cursor: pointer;
   text-decoration: none;
-}
-a:hover {
-  opacity: 0.8;
-}
-input.ng-touched.ng-invalid {
-  border: 2px solid red;
-}
-input {
-  font-size: 14px;
-  border-radius: 2px;
-  padding: 8px;
-  margin-bottom: 16px;
-  border: 1px solid #bdbdbd;
-  color: black;
-}
-button {
-  display: inline-flex;
-  align-items: center;
-  padding: 8px 16px;
-  border-radius: 2px;
-  font-size: 15px;
-  font-weight: bold;
-  cursor: pointer;
-  background-color: white;
-  color: #080707;
-  border: none;
-}
-button:hover {
-  opacity: 0.8;
-}
-button:disabled {
-  opacity: 0.5;
-  cursor: auto;
-}
-.error {
-  color: #ff3d3d;
-  width: 12vw;
 }
 
 /*# sourceMappingURL=styles.css.map*/
