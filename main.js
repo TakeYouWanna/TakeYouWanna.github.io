@@ -34,27 +34,59 @@ const pictureListReducer = Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["crea
 
 /***/ }),
 
+/***/ "0rVR":
+/*!*********************************************************************!*\
+  !*** ./src/app/shared/services/firebase/firebase-errors.service.ts ***!
+  \*********************************************************************/
+/*! exports provided: FirebaseErrorsService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FirebaseErrorsService", function() { return FirebaseErrorsService; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "fXoL");
+
+class FirebaseErrorsService {
+    getMessageFromError(error) {
+        switch (error.message) {
+            case "Invalid Query. A non-empty array is required for 'in' filters.":
+                return 'Ops... Nothing found =(';
+            default:
+                return error.message;
+        }
+    }
+}
+FirebaseErrorsService.ɵfac = function FirebaseErrorsService_Factory(t) { return new (t || FirebaseErrorsService)(); };
+FirebaseErrorsService.ɵprov = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjectable"]({ token: FirebaseErrorsService, factory: FirebaseErrorsService.ɵfac, providedIn: 'root' });
+
+
+/***/ }),
+
 /***/ "4ohX":
 /*!***************************************!*\
   !*** ./src/app/store/user/actions.ts ***!
   \***************************************/
-/*! exports provided: loadUser, createUser, loadUserSuccess, loadUserFailure, initializeUser, logOutUser */
+/*! exports provided: loadUser, loadUserSuccess, loadUserFailure, createUser, createUserSuccess, createUserFailure, initializeUser, logOutUser */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "loadUser", function() { return loadUser; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createUser", function() { return createUser; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "loadUserSuccess", function() { return loadUserSuccess; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "loadUserFailure", function() { return loadUserFailure; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createUser", function() { return createUser; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createUserSuccess", function() { return createUserSuccess; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createUserFailure", function() { return createUserFailure; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "initializeUser", function() { return initializeUser; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "logOutUser", function() { return logOutUser; });
 /* harmony import */ var _ngrx_store__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @ngrx/store */ "l7P3");
 
 const loadUser = Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["createAction"])("[Auth/ API] user loading" /* loadUser */, Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["props"])());
-const createUser = Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["createAction"])("[Auth/ API] user created" /* createUser */, Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["props"])());
 const loadUserSuccess = Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["createAction"])("[Auth/ API] user loaded successfully" /* loadUserSuccess */, Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["props"])());
 const loadUserFailure = Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["createAction"])("[Auth/ API] user loading failed" /* loadUserFailure */, Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["props"])());
+const createUser = Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["createAction"])("[Auth/ API] user creating" /* createUser */, Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["props"])());
+const createUserSuccess = Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["createAction"])("[Auth / API] user created successfully" /* createUserSuccess */, Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["props"])());
+const createUserFailure = Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["createAction"])("[Auth / API] user creating failed" /* createUserFailure */, Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["props"])());
 const initializeUser = Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["createAction"])("[Auth/ API] user initialized" /* initializeUser */);
 const logOutUser = Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["createAction"])("[Auth/ API] user logout" /* logoutUser */);
 
@@ -221,6 +253,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _actions__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./actions */ "4ohX");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/core */ "fXoL");
 /* harmony import */ var src_app_shared_services_firebase_firebase_auth_service__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! src/app/shared/services/firebase/firebase-auth.service */ "JOK8");
+/* harmony import */ var src_app_shared_services_firebase_firestore_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! src/app/shared/services/firebase/firestore.service */ "dK64");
+/* harmony import */ var src_app_shared_services_firebase_firebase_errors_service__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! src/app/shared/services/firebase/firebase-errors.service */ "0rVR");
+
+
 
 
 
@@ -230,23 +266,41 @@ __webpack_require__.r(__webpack_exports__);
 
 
 class UserEffect {
-    constructor(actions$, firebaseAuthService) {
+    constructor(actions$, firebaseAuthService, firestore, firebaseErrorsService) {
         this.actions$ = actions$;
         this.firebaseAuthService = firebaseAuthService;
+        this.firestore = firestore;
+        this.firebaseErrorsService = firebaseErrorsService;
         this.loadUser$ = Object(_ngrx_effects__WEBPACK_IMPORTED_MODULE_1__["createEffect"])(() => this.actions$.pipe(Object(_ngrx_effects__WEBPACK_IMPORTED_MODULE_1__["ofType"])(_actions__WEBPACK_IMPORTED_MODULE_4__["loadUser"]), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["switchMap"])((action) => this.firebaseAuthService.signIn(action.email, action.password).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["map"])((user) => Object(_actions__WEBPACK_IMPORTED_MODULE_4__["loadUserSuccess"])({ user })), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["catchError"])((error) => Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () { return Object(_actions__WEBPACK_IMPORTED_MODULE_4__["loadUserFailure"])({ error }); }))))));
-        this.createUser$ = Object(_ngrx_effects__WEBPACK_IMPORTED_MODULE_1__["createEffect"])(() => this.actions$.pipe(Object(_ngrx_effects__WEBPACK_IMPORTED_MODULE_1__["ofType"])(_actions__WEBPACK_IMPORTED_MODULE_4__["createUser"]), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["switchMap"])((action) => this.firebaseAuthService.signUp(action.email, action.password).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["map"])((user) => Object(_actions__WEBPACK_IMPORTED_MODULE_4__["loadUserSuccess"])({ user })), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["catchError"])((error) => Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () { return Object(_actions__WEBPACK_IMPORTED_MODULE_4__["loadUserFailure"])({ error }); }))))));
+        this.createUser$ = Object(_ngrx_effects__WEBPACK_IMPORTED_MODULE_1__["createEffect"])(() => this.actions$.pipe(Object(_ngrx_effects__WEBPACK_IMPORTED_MODULE_1__["ofType"])(_actions__WEBPACK_IMPORTED_MODULE_4__["createUser"]), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["switchMap"])((action) => this.firebaseAuthService.signUp(action.email, action.password).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["map"])((user) => {
+            const { name, password } = action;
+            const { email, uid } = user;
+            return Object(_actions__WEBPACK_IMPORTED_MODULE_4__["createUserSuccess"])({ uid, email, password, name });
+        }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["catchError"])((error) => Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () { return Object(_actions__WEBPACK_IMPORTED_MODULE_4__["createUserFailure"])({ error }); }))))));
+        this.createUserSuccess$ = Object(_ngrx_effects__WEBPACK_IMPORTED_MODULE_1__["createEffect"])(() => this.actions$.pipe(Object(_ngrx_effects__WEBPACK_IMPORTED_MODULE_1__["ofType"])(_actions__WEBPACK_IMPORTED_MODULE_4__["createUserSuccess"]), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["switchMap"])((action) => this.firestore.addNewUser(action.uid, action.name).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["map"])(() => {
+            const user = {
+                uid: action.uid,
+                email: action.email,
+            };
+            return Object(_actions__WEBPACK_IMPORTED_MODULE_4__["loadUserSuccess"])({ user });
+        })))));
+        this.createUserFailure$ = Object(_ngrx_effects__WEBPACK_IMPORTED_MODULE_1__["createEffect"])(() => this.actions$.pipe(Object(_ngrx_effects__WEBPACK_IMPORTED_MODULE_1__["ofType"])(_actions__WEBPACK_IMPORTED_MODULE_4__["createUserFailure"]), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["map"])((action) => {
+            const message = this.firebaseErrorsService.getMessageFromError(action.error);
+            const messageType = "error" /* error */;
+            return Object(_toast_notice_actions__WEBPACK_IMPORTED_MODULE_3__["setMessage"])({ message, messageType });
+        })));
         this.initializeUser$ = Object(_ngrx_effects__WEBPACK_IMPORTED_MODULE_1__["createEffect"])(() => this.actions$.pipe(Object(_ngrx_effects__WEBPACK_IMPORTED_MODULE_1__["ofType"])(_actions__WEBPACK_IMPORTED_MODULE_4__["initializeUser"]), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["switchMap"])(() => this.firebaseAuthService
             .initializeUser()
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["map"])((user) => Object(_actions__WEBPACK_IMPORTED_MODULE_4__["loadUserSuccess"])({ user }))))));
         this.logOutUser$ = Object(_ngrx_effects__WEBPACK_IMPORTED_MODULE_1__["createEffect"])(() => this.actions$.pipe(Object(_ngrx_effects__WEBPACK_IMPORTED_MODULE_1__["ofType"])(_actions__WEBPACK_IMPORTED_MODULE_4__["logOutUser"]), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["map"])(() => this.firebaseAuthService.logOut())), { dispatch: false });
         this.loadUserFailure$ = Object(_ngrx_effects__WEBPACK_IMPORTED_MODULE_1__["createEffect"])(() => this.actions$.pipe(Object(_ngrx_effects__WEBPACK_IMPORTED_MODULE_1__["ofType"])(_actions__WEBPACK_IMPORTED_MODULE_4__["loadUserFailure"]), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["map"])((action) => {
-            const { message } = action.error;
-            const messageType = 'error';
+            const message = this.firebaseErrorsService.getMessageFromError(action.error);
+            const messageType = "error" /* error */;
             return Object(_toast_notice_actions__WEBPACK_IMPORTED_MODULE_3__["setMessage"])({ message, messageType });
         })));
     }
 }
-UserEffect.ɵfac = function UserEffect_Factory(t) { return new (t || UserEffect)(_angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵinject"](_ngrx_effects__WEBPACK_IMPORTED_MODULE_1__["Actions"]), _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵinject"](src_app_shared_services_firebase_firebase_auth_service__WEBPACK_IMPORTED_MODULE_6__["FirebaseAuthService"])); };
+UserEffect.ɵfac = function UserEffect_Factory(t) { return new (t || UserEffect)(_angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵinject"](_ngrx_effects__WEBPACK_IMPORTED_MODULE_1__["Actions"]), _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵinject"](src_app_shared_services_firebase_firebase_auth_service__WEBPACK_IMPORTED_MODULE_6__["FirebaseAuthService"]), _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵinject"](src_app_shared_services_firebase_firestore_service__WEBPACK_IMPORTED_MODULE_7__["FirestoreService"]), _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵinject"](src_app_shared_services_firebase_firebase_errors_service__WEBPACK_IMPORTED_MODULE_8__["FirebaseErrorsService"])); };
 UserEffect.ɵprov = _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵdefineInjectable"]({ token: UserEffect, factory: UserEffect.ɵfac });
 
 
@@ -317,7 +371,7 @@ AppComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineCompo
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](0, "template", null, 0);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](2, "app-top-bar", 1);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](3, "router-outlet");
-    } }, directives: [_shared_components_top_bar_top_bar_component__WEBPACK_IMPORTED_MODULE_5__["TopBarComponent"], _angular_router__WEBPACK_IMPORTED_MODULE_6__["RouterOutlet"]], styles: ["app-top-bar[_ngcontent-%COMP%] {\n  padding: 8px 20px;\n  display: flex;\n  flex-direction: row;\n  justify-content: flex-end;\n  align-items: center;\n  flex-wrap: wrap;\n  margin-bottom: 50px;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uXFwuLlxcYXBwLmNvbXBvbmVudC5zY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0VBQ0UsaUJBQUE7RUFDQSxhQUFBO0VBQ0EsbUJBQUE7RUFDQSx5QkFBQTtFQUNBLG1CQUFBO0VBQ0EsZUFBQTtFQUNBLG1CQUFBO0FBQ0YiLCJmaWxlIjoiYXBwLmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiYXBwLXRvcC1iYXIge1xyXG4gIHBhZGRpbmc6IDhweCAyMHB4O1xyXG4gIGRpc3BsYXk6IGZsZXg7XHJcbiAgZmxleC1kaXJlY3Rpb246IHJvdztcclxuICBqdXN0aWZ5LWNvbnRlbnQ6IGZsZXgtZW5kO1xyXG4gIGFsaWduLWl0ZW1zOiBjZW50ZXI7XHJcbiAgZmxleC13cmFwOiB3cmFwO1xyXG4gIG1hcmdpbi1ib3R0b206IDUwcHg7XHJcbn1cclxuIl19 */"], changeDetection: 0 });
+    } }, directives: [_shared_components_top_bar_top_bar_component__WEBPACK_IMPORTED_MODULE_5__["TopBarComponent"], _angular_router__WEBPACK_IMPORTED_MODULE_6__["RouterOutlet"]], styles: ["app-top-bar[_ngcontent-%COMP%] {\n  padding: 8px 10px;\n  display: flex;\n  flex-direction: row;\n  justify-content: flex-end;\n  align-items: center;\n  flex-wrap: wrap;\n  margin-bottom: 50px;\n  box-sizing: border-box;\n  width: 100%;\n}\n\n@media only screen and (max-width: 768px) {\n  app-top-bar[_ngcontent-%COMP%] {\n    margin-bottom: 20px;\n  }\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uXFwuLlxcYXBwLmNvbXBvbmVudC5zY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0VBQ0UsaUJBQUE7RUFDQSxhQUFBO0VBQ0EsbUJBQUE7RUFDQSx5QkFBQTtFQUNBLG1CQUFBO0VBQ0EsZUFBQTtFQUNBLG1CQUFBO0VBQ0Esc0JBQUE7RUFDQSxXQUFBO0FBQ0Y7O0FBRUE7RUFDRTtJQUNFLG1CQUFBO0VBQ0Y7QUFDRiIsImZpbGUiOiJhcHAuY29tcG9uZW50LnNjc3MiLCJzb3VyY2VzQ29udGVudCI6WyJhcHAtdG9wLWJhciB7XHJcbiAgcGFkZGluZzogOHB4IDEwcHg7XHJcbiAgZGlzcGxheTogZmxleDtcclxuICBmbGV4LWRpcmVjdGlvbjogcm93O1xyXG4gIGp1c3RpZnktY29udGVudDogZmxleC1lbmQ7XHJcbiAgYWxpZ24taXRlbXM6IGNlbnRlcjtcclxuICBmbGV4LXdyYXA6IHdyYXA7XHJcbiAgbWFyZ2luLWJvdHRvbTogNTBweDtcclxuICBib3gtc2l6aW5nOiBib3JkZXItYm94O1xyXG4gIHdpZHRoOiAxMDAlO1xyXG59XHJcblxyXG5AbWVkaWEgb25seSBzY3JlZW4gYW5kIChtYXgtd2lkdGg6IDc2OHB4KSB7XHJcbiAgYXBwLXRvcC1iYXIge1xyXG4gICAgbWFyZ2luLWJvdHRvbTogMjBweDtcclxuICB9XHJcbn1cclxuIl19 */"], changeDetection: 0 });
 
 
 /***/ }),
@@ -504,7 +558,7 @@ TopBarComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdefineCo
         const _r1 = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵreference"](7);
         _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵadvance"](4);
         _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("ngIf", _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵpipeBind1"](5, 2, ctx.uid$) === "")("ngIfElse", _r1);
-    } }, directives: [_angular_router__WEBPACK_IMPORTED_MODULE_4__["RouterLinkWithHref"], _angular_router__WEBPACK_IMPORTED_MODULE_4__["RouterLinkActive"], _angular_common__WEBPACK_IMPORTED_MODULE_5__["NgIf"]], pipes: [_angular_common__WEBPACK_IMPORTED_MODULE_5__["AsyncPipe"]], styles: ["h1[_ngcontent-%COMP%] {\n  margin: 0px;\n  font-family: Impact, \"Arial Narrow Bold\", sans-serif;\n  color: #9eadb0;\n}\n\na[_ngcontent-%COMP%] {\n  font-size: 20pt;\n  cursor: pointer;\n  padding: 5px;\n  margin: 5px;\n}\n\na[_ngcontent-%COMP%]:hover {\n  opacity: 0.6;\n}\n\n.activeLink[_ngcontent-%COMP%] {\n  opacity: 0.6;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uXFwuLlxcLi5cXC4uXFwuLlxcdG9wLWJhci5jb21wb25lbnQuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNFLFdBQUE7RUFDQSxvREFBQTtFQUNBLGNBQUE7QUFDRjs7QUFFQTtFQUNFLGVBQUE7RUFDQSxlQUFBO0VBQ0EsWUFBQTtFQUNBLFdBQUE7QUFDRjs7QUFFQTtFQUNFLFlBQUE7QUFDRjs7QUFFQTtFQUNFLFlBQUE7QUFDRiIsImZpbGUiOiJ0b3AtYmFyLmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiaDEge1xyXG4gIG1hcmdpbjogMHB4O1xyXG4gIGZvbnQtZmFtaWx5OiBJbXBhY3QsICdBcmlhbCBOYXJyb3cgQm9sZCcsIHNhbnMtc2VyaWY7XHJcbiAgY29sb3I6IHJnYigxNTgsIDE3MywgMTc2KTtcclxufVxyXG5cclxuYSB7XHJcbiAgZm9udC1zaXplOiAyMHB0O1xyXG4gIGN1cnNvcjogcG9pbnRlcjtcclxuICBwYWRkaW5nOiA1cHg7XHJcbiAgbWFyZ2luOiA1cHg7XHJcbn1cclxuXHJcbmE6aG92ZXIge1xyXG4gIG9wYWNpdHk6IDAuNjtcclxufVxyXG5cclxuLmFjdGl2ZUxpbmsge1xyXG4gIG9wYWNpdHk6IDAuNjtcclxufVxyXG4iXX0= */"], changeDetection: 0 });
+    } }, directives: [_angular_router__WEBPACK_IMPORTED_MODULE_4__["RouterLinkWithHref"], _angular_router__WEBPACK_IMPORTED_MODULE_4__["RouterLinkActive"], _angular_common__WEBPACK_IMPORTED_MODULE_5__["NgIf"]], pipes: [_angular_common__WEBPACK_IMPORTED_MODULE_5__["AsyncPipe"]], styles: ["a[_ngcontent-%COMP%] {\n  cursor: pointer;\n  padding: 5px;\n  margin: 5px;\n}\n\na[_ngcontent-%COMP%]:hover {\n  opacity: 0.6;\n}\n\n.activeLink[_ngcontent-%COMP%] {\n  opacity: 0.6;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uXFwuLlxcLi5cXC4uXFwuLlxcdG9wLWJhci5jb21wb25lbnQuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNFLGVBQUE7RUFDQSxZQUFBO0VBQ0EsV0FBQTtBQUNGOztBQUVBO0VBQ0UsWUFBQTtBQUNGOztBQUVBO0VBQ0UsWUFBQTtBQUNGIiwiZmlsZSI6InRvcC1iYXIuY29tcG9uZW50LnNjc3MiLCJzb3VyY2VzQ29udGVudCI6WyJhIHtcclxuICBjdXJzb3I6IHBvaW50ZXI7XHJcbiAgcGFkZGluZzogNXB4O1xyXG4gIG1hcmdpbjogNXB4O1xyXG59XHJcblxyXG5hOmhvdmVyIHtcclxuICBvcGFjaXR5OiAwLjY7XHJcbn1cclxuXHJcbi5hY3RpdmVMaW5rIHtcclxuICBvcGFjaXR5OiAwLjY7XHJcbn1cclxuIl19 */"], changeDetection: 0 });
 
 
 /***/ }),
@@ -530,38 +584,71 @@ __webpack_require__.r(__webpack_exports__);
 class FirestoreService {
     constructor(angularFirestore) {
         this.angularFirestore = angularFirestore;
-        this.collectionRef = this.angularFirestore.collection('Images').ref;
+        this.collectionPicturesRef = this.angularFirestore.collection('Pictures').ref;
+        this.collectionUsersRef = this.angularFirestore.collection('Users').ref;
     }
-    addNewPicture(imageSrc, author) {
+    addNewPicture(pictureSrc, userId) {
         const data = {
-            imageSrc,
-            author,
-            date: new Date(),
+            pictureSrc,
+            userId,
+            dateAdded: new Date(),
         };
-        return Object(rxjs__WEBPACK_IMPORTED_MODULE_0__["from"])(this.collectionRef.add(data));
+        return Object(rxjs__WEBPACK_IMPORTED_MODULE_0__["from"])(this.collectionPicturesRef.add(data));
     }
-    removePicture(id) {
-        return Object(rxjs__WEBPACK_IMPORTED_MODULE_0__["from"])(this.collectionRef.doc(id).delete());
+    addNewUser(uid, name) {
+        const newUser = {
+            uid,
+            name,
+        };
+        return Object(rxjs__WEBPACK_IMPORTED_MODULE_0__["from"])(this.collectionUsersRef.add(newUser));
+    }
+    removePicture(pictureId) {
+        return Object(rxjs__WEBPACK_IMPORTED_MODULE_0__["from"])(this.collectionPicturesRef.doc(pictureId).delete());
     }
     getPictures(criterion) {
-        return Object(rxjs__WEBPACK_IMPORTED_MODULE_0__["from"])(this.returnRequestByCriterion(criterion)).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["map"])((response) => response.docs.reduce((acc, val) => {
-            const { imageSrc, author } = val.data();
-            acc[val.id] = { imageSrc, author };
-            return acc;
-        }, {})));
+        return this.returnRequestByCriterion(criterion).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["switchMap"])((picturesData) => {
+            const usersId = [
+                ...new Set(picturesData.docs.map((pictureData) => pictureData.data().userId)),
+            ];
+            return Object(rxjs__WEBPACK_IMPORTED_MODULE_0__["from"])(this.collectionUsersRef.where('uid', 'in', usersId).get()).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["map"])((usersData) => {
+                return picturesData.docs.reduce((pictureList, picture) => {
+                    const { pictureSrc, userId } = picture.data();
+                    const { name } = usersData.docs
+                        .find((value) => {
+                        return value.data().uid === userId;
+                    })
+                        .data();
+                    pictureList[picture.id] = { pictureSrc, name };
+                    return pictureList;
+                }, {});
+            }));
+        }));
+    }
+    getUidByUsername(name) {
+        return Object(rxjs__WEBPACK_IMPORTED_MODULE_0__["from"])(this.collectionUsersRef.where('name', '==', name).get()).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["map"])((userData) => {
+            if (userData.size > 0) {
+                return userData.docs.pop().data().uid;
+            }
+            return '';
+        }));
     }
     returnRequestByCriterion(criterion) {
         switch (criterion.type) {
+            case 'uid':
+                return Object(rxjs__WEBPACK_IMPORTED_MODULE_0__["from"])(this.collectionPicturesRef
+                    .where('userId', '==', criterion.value)
+                    .limit(criterion.limit)
+                    .get());
             case 'author':
-                return this.collectionRef
-                    .where('author', '==', criterion.value)
+                return Object(rxjs__WEBPACK_IMPORTED_MODULE_0__["from"])(this.getUidByUsername(criterion.value).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["switchMap"])((uid) => this.collectionPicturesRef
+                    .where('userId', '==', uid)
                     .limit(criterion.limit)
-                    .get();
+                    .get())));
             default:
-                return this.collectionRef
-                    .orderBy('date', 'desc')
+                return Object(rxjs__WEBPACK_IMPORTED_MODULE_0__["from"])(this.collectionPicturesRef
+                    .orderBy('dateAdded', 'desc')
                     .limit(criterion.limit)
-                    .get();
+                    .get());
         }
     }
 }
@@ -590,6 +677,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _actions__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./actions */ "ycBb");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/core */ "fXoL");
 /* harmony import */ var src_app_shared_services_firebase_firestore_service__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! src/app/shared/services/firebase/firestore.service */ "dK64");
+/* harmony import */ var src_app_shared_services_firebase_firebase_errors_service__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! src/app/shared/services/firebase/firebase-errors.service */ "0rVR");
+
 
 
 
@@ -602,47 +691,48 @@ __webpack_require__.r(__webpack_exports__);
 
 
 class PictureListEffect {
-    constructor(action$, firestore, store$) {
+    constructor(action$, firestore, store$, firebaseErrorService) {
         this.action$ = action$;
         this.firestore = firestore;
         this.store$ = store$;
-        this.addPicture$ = Object(_ngrx_effects__WEBPACK_IMPORTED_MODULE_1__["createEffect"])(() => this.action$.pipe(Object(_ngrx_effects__WEBPACK_IMPORTED_MODULE_1__["ofType"])(_actions__WEBPACK_IMPORTED_MODULE_6__["addPicture"]), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["withLatestFrom"])(this.store$.pipe(Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_2__["select"])(_user_selectors__WEBPACK_IMPORTED_MODULE_5__["selectUserEmail"]))), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["switchMap"])(([action, email]) => this.firestore.addNewPicture(action.imageSrc, email).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])(() => {
+        this.firebaseErrorService = firebaseErrorService;
+        this.addPicture$ = Object(_ngrx_effects__WEBPACK_IMPORTED_MODULE_1__["createEffect"])(() => this.action$.pipe(Object(_ngrx_effects__WEBPACK_IMPORTED_MODULE_1__["ofType"])(_actions__WEBPACK_IMPORTED_MODULE_6__["addPicture"]), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["withLatestFrom"])(this.store$.pipe(Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_2__["select"])(_user_selectors__WEBPACK_IMPORTED_MODULE_5__["selectUserUid"]))), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["switchMap"])(([action, uid]) => this.firestore.addNewPicture(action.pictureSrc, uid).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])(() => {
             const message = 'Picture added successfully';
             return Object(_actions__WEBPACK_IMPORTED_MODULE_6__["addPictureSuccess"])({ message });
         }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["catchError"])((error) => Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () { return Object(_actions__WEBPACK_IMPORTED_MODULE_6__["addPictureFailure"])({ error }); }))))));
         this.loadPictures$ = Object(_ngrx_effects__WEBPACK_IMPORTED_MODULE_1__["createEffect"])(() => this.action$.pipe(Object(_ngrx_effects__WEBPACK_IMPORTED_MODULE_1__["ofType"])(_actions__WEBPACK_IMPORTED_MODULE_6__["loadPictures"]), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["switchMap"])((action) => this.firestore.getPictures(action.criterion).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])((newPictureList) => Object(_actions__WEBPACK_IMPORTED_MODULE_6__["loadPicturesSuccess"])({ newPictureList })), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["catchError"])((error) => Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () { return Object(_actions__WEBPACK_IMPORTED_MODULE_6__["loadPicturesFailure"])({ error }); }))))));
-        this.removePicture$ = Object(_ngrx_effects__WEBPACK_IMPORTED_MODULE_1__["createEffect"])(() => this.action$.pipe(Object(_ngrx_effects__WEBPACK_IMPORTED_MODULE_1__["ofType"])(_actions__WEBPACK_IMPORTED_MODULE_6__["removePicture"]), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["switchMap"])((action) => this.firestore.removePicture(action.id).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])(() => {
+        this.removePicture$ = Object(_ngrx_effects__WEBPACK_IMPORTED_MODULE_1__["createEffect"])(() => this.action$.pipe(Object(_ngrx_effects__WEBPACK_IMPORTED_MODULE_1__["ofType"])(_actions__WEBPACK_IMPORTED_MODULE_6__["removePicture"]), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["switchMap"])((action) => this.firestore.removePicture(action.pictureId).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])(() => {
             const message = 'Picture removed successfully';
             return Object(_actions__WEBPACK_IMPORTED_MODULE_6__["removePictureSuccess"])({ message });
         }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["catchError"])((error) => Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () { return Object(_actions__WEBPACK_IMPORTED_MODULE_6__["removePictureFailure"])({ error }); }))))));
         this.addPictureSuccess$ = Object(_ngrx_effects__WEBPACK_IMPORTED_MODULE_1__["createEffect"])(() => this.action$.pipe(Object(_ngrx_effects__WEBPACK_IMPORTED_MODULE_1__["ofType"])(_actions__WEBPACK_IMPORTED_MODULE_6__["addPictureSuccess"]), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])((action) => {
             const { message } = action;
-            const messageType = 'successfully';
+            const messageType = "successfully" /* successfully */;
             return Object(_toast_notice_actions__WEBPACK_IMPORTED_MODULE_4__["setMessage"])({ message, messageType });
         })));
         this.addPictureFailure$ = Object(_ngrx_effects__WEBPACK_IMPORTED_MODULE_1__["createEffect"])(() => this.action$.pipe(Object(_ngrx_effects__WEBPACK_IMPORTED_MODULE_1__["ofType"])(_actions__WEBPACK_IMPORTED_MODULE_6__["addPictureFailure"]), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])((action) => {
-            const { message } = action.error;
-            const messageType = 'error';
+            const message = this.firebaseErrorService.getMessageFromError(action.error);
+            const messageType = "error" /* error */;
             return Object(_toast_notice_actions__WEBPACK_IMPORTED_MODULE_4__["setMessage"])({ message, messageType });
         })));
         this.removePictureSuccess$ = Object(_ngrx_effects__WEBPACK_IMPORTED_MODULE_1__["createEffect"])(() => this.action$.pipe(Object(_ngrx_effects__WEBPACK_IMPORTED_MODULE_1__["ofType"])(_actions__WEBPACK_IMPORTED_MODULE_6__["removePictureSuccess"]), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])((action) => {
             const { message } = action;
-            const messageType = 'successfully';
+            const messageType = "successfully" /* successfully */;
             return Object(_toast_notice_actions__WEBPACK_IMPORTED_MODULE_4__["setMessage"])({ message, messageType });
         })));
         this.removePictureFailure$ = Object(_ngrx_effects__WEBPACK_IMPORTED_MODULE_1__["createEffect"])(() => this.action$.pipe(Object(_ngrx_effects__WEBPACK_IMPORTED_MODULE_1__["ofType"])(_actions__WEBPACK_IMPORTED_MODULE_6__["removePictureFailure"]), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])((action) => {
-            const { message } = action.error;
-            const messageType = 'error';
+            const message = this.firebaseErrorService.getMessageFromError(action.error);
+            const messageType = "error" /* error */;
             return Object(_toast_notice_actions__WEBPACK_IMPORTED_MODULE_4__["setMessage"])({ message, messageType });
         })));
         this.loadPicturesFailure$ = Object(_ngrx_effects__WEBPACK_IMPORTED_MODULE_1__["createEffect"])(() => this.action$.pipe(Object(_ngrx_effects__WEBPACK_IMPORTED_MODULE_1__["ofType"])(_actions__WEBPACK_IMPORTED_MODULE_6__["loadPicturesFailure"]), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])((action) => {
-            const { message } = action.error;
-            const messageType = 'error';
+            const message = this.firebaseErrorService.getMessageFromError(action.error);
+            const messageType = "error" /* error */;
             return Object(_toast_notice_actions__WEBPACK_IMPORTED_MODULE_4__["setMessage"])({ message, messageType });
         })));
     }
 }
-PictureListEffect.ɵfac = function PictureListEffect_Factory(t) { return new (t || PictureListEffect)(_angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵinject"](_ngrx_effects__WEBPACK_IMPORTED_MODULE_1__["Actions"]), _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵinject"](src_app_shared_services_firebase_firestore_service__WEBPACK_IMPORTED_MODULE_8__["FirestoreService"]), _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵinject"](_ngrx_store__WEBPACK_IMPORTED_MODULE_2__["Store"])); };
+PictureListEffect.ɵfac = function PictureListEffect_Factory(t) { return new (t || PictureListEffect)(_angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵinject"](_ngrx_effects__WEBPACK_IMPORTED_MODULE_1__["Actions"]), _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵinject"](src_app_shared_services_firebase_firestore_service__WEBPACK_IMPORTED_MODULE_8__["FirestoreService"]), _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵinject"](_ngrx_store__WEBPACK_IMPORTED_MODULE_2__["Store"]), _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵinject"](src_app_shared_services_firebase_firebase_errors_service__WEBPACK_IMPORTED_MODULE_9__["FirebaseErrorsService"])); };
 PictureListEffect.ɵprov = _angular_core__WEBPACK_IMPORTED_MODULE_7__["ɵɵdefineInjectable"]({ token: PictureListEffect, factory: PictureListEffect.ɵfac });
 
 
@@ -685,10 +775,10 @@ __webpack_require__.r(__webpack_exports__);
 class ToastNoticeComponent {
     ngOnInit() {
         switch (this.messageType) {
-            case 'error':
+            case "error" /* error */:
                 this.background = 'red';
                 break;
-            case 'successfully':
+            case "successfully" /* successfully */:
                 this.background = 'green';
                 break;
             default:
@@ -708,7 +798,7 @@ ToastNoticeComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdef
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵproperty"]("@toastOpenClose", undefined);
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵadvance"](2);
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtextInterpolate"](ctx.message);
-    } }, styles: [".toast[_ngcontent-%COMP%] {\n  position: absolute;\n  padding: 10px;\n  border-radius: 10px;\n  top: 10px;\n  left: 50%;\n  transform: translateX(-50%);\n  max-width: 250px;\n  z-index: 20;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uXFwuLlxcLi5cXC4uXFwuLlxcdG9hc3Qtbm90aWNlLmNvbXBvbmVudC5zY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0VBQ0Usa0JBQUE7RUFDQSxhQUFBO0VBQ0EsbUJBQUE7RUFDQSxTQUFBO0VBQ0EsU0FBQTtFQUNBLDJCQUFBO0VBQ0EsZ0JBQUE7RUFDQSxXQUFBO0FBQ0YiLCJmaWxlIjoidG9hc3Qtbm90aWNlLmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLnRvYXN0IHtcclxuICBwb3NpdGlvbjogYWJzb2x1dGU7XHJcbiAgcGFkZGluZzogMTBweDtcclxuICBib3JkZXItcmFkaXVzOiAxMHB4O1xyXG4gIHRvcDogMTBweDtcclxuICBsZWZ0OiA1MCU7XHJcbiAgdHJhbnNmb3JtOiB0cmFuc2xhdGVYKC01MCUpO1xyXG4gIG1heC13aWR0aDogMjUwcHg7XHJcbiAgei1pbmRleDogMjA7XHJcbn1cclxuIl19 */"], data: { animation: [
+    } }, styles: [".toast[_ngcontent-%COMP%] {\n  position: absolute;\n  padding: 10px;\n  border-radius: 10px;\n  top: 10px;\n  left: 50%;\n  transform: translateX(-50%);\n  max-width: 350px;\n  overflow: hidden;\n  z-index: 20;\n}\n.toast[_ngcontent-%COMP%]   p[_ngcontent-%COMP%] {\n  font-size: 12pt;\n}\n@media only screen and (max-width: 768px) {\n  p[_ngcontent-%COMP%] {\n    font-size: 8pt;\n  }\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uXFwuLlxcLi5cXC4uXFwuLlxcdG9hc3Qtbm90aWNlLmNvbXBvbmVudC5zY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0VBQ0Usa0JBQUE7RUFDQSxhQUFBO0VBQ0EsbUJBQUE7RUFDQSxTQUFBO0VBQ0EsU0FBQTtFQUNBLDJCQUFBO0VBQ0EsZ0JBQUE7RUFDQSxnQkFBQTtFQUNBLFdBQUE7QUFDRjtBQUFFO0VBQ0UsZUFBQTtBQUVKO0FBRUE7RUFDRTtJQUNFLGNBQUE7RUFDRjtBQUNGIiwiZmlsZSI6InRvYXN0LW5vdGljZS5jb21wb25lbnQuc2NzcyIsInNvdXJjZXNDb250ZW50IjpbIi50b2FzdCB7XHJcbiAgcG9zaXRpb246IGFic29sdXRlO1xyXG4gIHBhZGRpbmc6IDEwcHg7XHJcbiAgYm9yZGVyLXJhZGl1czogMTBweDtcclxuICB0b3A6IDEwcHg7XHJcbiAgbGVmdDogNTAlO1xyXG4gIHRyYW5zZm9ybTogdHJhbnNsYXRlWCgtNTAlKTtcclxuICBtYXgtd2lkdGg6IDM1MHB4O1xyXG4gIG92ZXJmbG93OiBoaWRkZW47XHJcbiAgei1pbmRleDogMjA7XHJcbiAgcCB7XHJcbiAgICBmb250LXNpemU6IDEycHQ7XHJcbiAgfVxyXG59XHJcblxyXG5AbWVkaWEgb25seSBzY3JlZW4gYW5kIChtYXgtd2lkdGg6IDc2OHB4KSB7XHJcbiAgcCB7XHJcbiAgICBmb250LXNpemU6IDhwdDtcclxuICB9XHJcbn1cclxuIl19 */"], data: { animation: [
             Object(_angular_animations__WEBPACK_IMPORTED_MODULE_0__["trigger"])('toastOpenClose', [
                 Object(_angular_animations__WEBPACK_IMPORTED_MODULE_0__["transition"])(':enter', [
                     Object(_angular_animations__WEBPACK_IMPORTED_MODULE_0__["style"])({ opacity: '0' }),
@@ -743,7 +833,7 @@ __webpack_require__.r(__webpack_exports__);
 class ToastNoticeEffect {
     constructor(action$) {
         this.action$ = action$;
-        this.setMessage$ = Object(_ngrx_effects__WEBPACK_IMPORTED_MODULE_0__["createEffect"])(() => this.action$.pipe(Object(_ngrx_effects__WEBPACK_IMPORTED_MODULE_0__["ofType"])(_actions__WEBPACK_IMPORTED_MODULE_2__["setMessage"]), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["delay"])(4000), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["map"])(() => Object(_actions__WEBPACK_IMPORTED_MODULE_2__["removeMessage"])())));
+        this.setMessage$ = Object(_ngrx_effects__WEBPACK_IMPORTED_MODULE_0__["createEffect"])(() => this.action$.pipe(Object(_ngrx_effects__WEBPACK_IMPORTED_MODULE_0__["ofType"])(_actions__WEBPACK_IMPORTED_MODULE_2__["setMessage"]), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["delay"])(5000), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["map"])(() => Object(_actions__WEBPACK_IMPORTED_MODULE_2__["removeMessage"])())));
     }
 }
 ToastNoticeEffect.ɵfac = function ToastNoticeEffect_Factory(t) { return new (t || ToastNoticeEffect)(_angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵinject"](_ngrx_effects__WEBPACK_IMPORTED_MODULE_0__["Actions"])); };

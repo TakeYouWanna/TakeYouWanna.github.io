@@ -9,12 +9,13 @@
 body {
   background-color: #c1bdba;
   margin: 0;
-  min-width: 762px;
+  width: 100%;
   box-sizing: content-box;
 }
 * {
   color: white;
   font-family: "Roboto Condensed", sans-serif;
+  font-size: 18pt;
 }
 .window-div {
   background-color: #28323b;
@@ -29,6 +30,24 @@ router-outlet + * {
 }
 a {
   text-decoration: none;
+}
+@media only screen and (max-width: 768px) {
+  body {
+    max-width: 768px;
+  }
+
+  * {
+    font-size: 15pt;
+  }
+}
+@media only screen and (max-width: 480px) {
+  body {
+    max-width: 480px;
+  }
+
+  * {
+    font-size: 10pt;
+  }
 }
 
 /*# sourceMappingURL=styles.css.map*/
