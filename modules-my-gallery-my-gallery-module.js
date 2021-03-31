@@ -112,7 +112,7 @@ class MyGalleryComponent {
     constructor(store$, actions$) {
         this.store$ = store$;
         this.actions$ = actions$;
-        this.pictureList = this.store$.pipe(Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_1__["select"])(src_app_store_picture_list_selectors__WEBPACK_IMPORTED_MODULE_3__["selectPictureList"]));
+        this.pictureList$ = this.store$.pipe(Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_1__["select"])(src_app_store_picture_list_selectors__WEBPACK_IMPORTED_MODULE_3__["selectPictureList"]));
         this.uid$ = this.store$.pipe(Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_1__["select"])(src_app_store_user_selectors__WEBPACK_IMPORTED_MODULE_4__["selectUserUid"]));
         this.criterion = {
             limit: 10,
@@ -122,13 +122,19 @@ class MyGalleryComponent {
     }
     onWindowScroll() {
         if (document.scrollingElement.scrollHeight -
-            document.scrollingElement.scrollTop ===
-            document.scrollingElement.clientHeight) {
+            document.scrollingElement.scrollTop -
+            document.scrollingElement.clientHeight <
+            50 &&
+            this.picturesUploaded &&
+            this.currentPosition < document.scrollingElement.scrollTop) {
+            this.picturesUploaded = false;
             this.criterion.limit += 10;
             this.loadPictures();
         }
+        this.currentPosition = document.scrollingElement.scrollTop;
     }
     ngOnInit() {
+        this.store$.dispatch(Object(src_app_store_picture_list_actions__WEBPACK_IMPORTED_MODULE_2__["clearAllPicture"])());
         this.uidSubscription$ = this.uid$.subscribe((uid) => {
             if (uid) {
                 this.criterion.value = uid;
@@ -141,9 +147,12 @@ class MyGalleryComponent {
             this.loadPictures();
             action.unsubscribe();
         });
+        this.pictureListSubscription$ = this.pictureList$.subscribe(() => {
+            this.picturesUploaded = true;
+        });
     }
     loadPictures() {
-        const { criterion } = this;
+        const criterion = Object.assign({}, this.criterion);
         if (criterion.value) {
             this.store$.dispatch(Object(src_app_store_picture_list_actions__WEBPACK_IMPORTED_MODULE_2__["loadPictures"])({ criterion }));
         }
@@ -155,8 +164,8 @@ class MyGalleryComponent {
         return index;
     }
     ngOnDestroy() {
+        this.pictureListSubscription$.unsubscribe();
         this.uidSubscription$.unsubscribe();
-        this.store$.dispatch(Object(src_app_store_picture_list_actions__WEBPACK_IMPORTED_MODULE_2__["clearAllPicture"])());
     }
 }
 MyGalleryComponent.ɵfac = function MyGalleryComponent_Factory(t) { return new (t || MyGalleryComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵdirectiveInject"](_ngrx_store__WEBPACK_IMPORTED_MODULE_1__["Store"]), _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵdirectiveInject"](_ngrx_effects__WEBPACK_IMPORTED_MODULE_0__["Actions"])); };
@@ -167,7 +176,7 @@ MyGalleryComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵdefin
         _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵpipe"](1, "keyvalue");
         _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵpipe"](2, "async");
     } if (rf & 2) {
-        _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵproperty"]("ngForOf", _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵpipeBind1"](1, 2, _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵpipeBind1"](2, 4, ctx.pictureList)))("ngForTrackBy", ctx.trackByObject);
+        _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵproperty"]("ngForOf", _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵpipeBind1"](1, 2, _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵpipeBind1"](2, 4, ctx.pictureList$)))("ngForTrackBy", ctx.trackByObject);
     } }, directives: [_angular_common__WEBPACK_IMPORTED_MODULE_6__["NgForOf"]], pipes: [_angular_common__WEBPACK_IMPORTED_MODULE_6__["KeyValuePipe"], _angular_common__WEBPACK_IMPORTED_MODULE_6__["AsyncPipe"]], styles: [".picture[_ngcontent-%COMP%] {\n  padding: 20px;\n  margin: 20px;\n  font-size: 14pt;\n  max-width: 25vw;\n}\n.picture[_ngcontent-%COMP%]   div[_ngcontent-%COMP%] {\n  display: flex;\n  flex-direction: row;\n  justify-content: space-between;\n  align-items: center;\n}\n.picture[_ngcontent-%COMP%]   div[_ngcontent-%COMP%]   p[_ngcontent-%COMP%] {\n  overflow: hidden;\n}\n.picture[_ngcontent-%COMP%]   div[_ngcontent-%COMP%]   button[_ngcontent-%COMP%] {\n  background: none;\n  font-size: 20pt;\n  padding: 0px;\n  color: red;\n  border: none;\n  outline: none;\n  cursor: pointer;\n  margin-left: 15px;\n}\n.picture[_ngcontent-%COMP%]   img[_ngcontent-%COMP%] {\n  width: 25vw;\n  height: 25vw;\n  background-color: white;\n}\n@media only screen and (max-width: 768px) {\n  .picture[_ngcontent-%COMP%] {\n    padding: 8px;\n    margin: 10px;\n    font-size: 15pt;\n  }\n  .picture[_ngcontent-%COMP%]   p[_ngcontent-%COMP%] {\n    margin: 0px;\n  }\n  .picture[_ngcontent-%COMP%]   div[_ngcontent-%COMP%] {\n    margin: 0px 0px 10px 0px;\n  }\n  .picture[_ngcontent-%COMP%]   div[_ngcontent-%COMP%]   button[_ngcontent-%COMP%] {\n    font-size: 10pt;\n  }\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uXFwuLlxcLi5cXC4uXFxteS1nYWxsZXJ5LmNvbXBvbmVudC5zY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUVBO0VBQ0UsYUFBQTtFQUNBLFlBQUE7RUFDQSxlQUFBO0VBQ0EsZUFOVTtBQUtaO0FBRUU7RUFDRSxhQUFBO0VBQ0EsbUJBQUE7RUFDQSw4QkFBQTtFQUNBLG1CQUFBO0FBQUo7QUFDSTtFQUNFLGdCQUFBO0FBQ047QUFDSTtFQUNFLGdCQUFBO0VBQ0EsZUFBQTtFQUNBLFlBQUE7RUFDQSxVQUFBO0VBQ0EsWUFBQTtFQUNBLGFBQUE7RUFDQSxlQUFBO0VBQ0EsaUJBQUE7QUFDTjtBQUVFO0VBQ0UsV0EzQlE7RUE0QlIsWUE1QlE7RUE2QlIsdUJBQUE7QUFBSjtBQUlBO0VBQ0U7SUFDRSxZQUFBO0lBQ0EsWUFBQTtJQUNBLGVBQUE7RUFERjtFQUVFO0lBQ0UsV0FBQTtFQUFKO0VBR0U7SUFDRSx3QkFBQTtFQURKO0VBRUk7SUFDRSxlQUFBO0VBQU47QUFDRiIsImZpbGUiOiJteS1nYWxsZXJ5LmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiJGltYWdlU2l6ZTogMjV2dztcclxuXHJcbi5waWN0dXJlIHtcclxuICBwYWRkaW5nOiAyMHB4O1xyXG4gIG1hcmdpbjogMjBweDtcclxuICBmb250LXNpemU6IDE0cHQ7XHJcbiAgbWF4LXdpZHRoOiAkaW1hZ2VTaXplO1xyXG4gIGRpdiB7XHJcbiAgICBkaXNwbGF5OiBmbGV4O1xyXG4gICAgZmxleC1kaXJlY3Rpb246IHJvdztcclxuICAgIGp1c3RpZnktY29udGVudDogc3BhY2UtYmV0d2VlbjtcclxuICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7XHJcbiAgICBwIHtcclxuICAgICAgb3ZlcmZsb3c6IGhpZGRlbjtcclxuICAgIH1cclxuICAgIGJ1dHRvbiB7XHJcbiAgICAgIGJhY2tncm91bmQ6IG5vbmU7XHJcbiAgICAgIGZvbnQtc2l6ZTogMjBwdDtcclxuICAgICAgcGFkZGluZzogMHB4O1xyXG4gICAgICBjb2xvcjogcmVkO1xyXG4gICAgICBib3JkZXI6IG5vbmU7XHJcbiAgICAgIG91dGxpbmU6IG5vbmU7XHJcbiAgICAgIGN1cnNvcjogcG9pbnRlcjtcclxuICAgICAgbWFyZ2luLWxlZnQ6IDE1cHg7XHJcbiAgICB9XHJcbiAgfVxyXG4gIGltZyB7XHJcbiAgICB3aWR0aDogJGltYWdlU2l6ZTtcclxuICAgIGhlaWdodDogJGltYWdlU2l6ZTtcclxuICAgIGJhY2tncm91bmQtY29sb3I6IHdoaXRlO1xyXG4gIH1cclxufVxyXG5cclxuQG1lZGlhIG9ubHkgc2NyZWVuIGFuZCAobWF4LXdpZHRoOiA3NjhweCkge1xyXG4gIC5waWN0dXJlIHtcclxuICAgIHBhZGRpbmc6IDhweDtcclxuICAgIG1hcmdpbjogMTBweDtcclxuICAgIGZvbnQtc2l6ZTogMTVwdDtcclxuICAgIHAge1xyXG4gICAgICBtYXJnaW46IDBweDtcclxuICAgIH1cclxuXHJcbiAgICBkaXYge1xyXG4gICAgICBtYXJnaW46IDBweCAwcHggMTBweCAwcHg7XHJcbiAgICAgIGJ1dHRvbiB7XHJcbiAgICAgICAgZm9udC1zaXplOiAxMHB0O1xyXG4gICAgICB9XHJcbiAgICB9XHJcbiAgfVxyXG59XHJcbiJdfQ== */"], changeDetection: 0 });
 
 

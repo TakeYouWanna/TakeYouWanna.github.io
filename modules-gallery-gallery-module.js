@@ -104,38 +104,52 @@ class GalleryComponent {
     constructor(store$) {
         this.store$ = store$;
         this.pictureList$ = this.store$.pipe(Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["select"])(src_app_store_picture_list_selectors__WEBPACK_IMPORTED_MODULE_2__["selectPictureList"]));
-        this.limit = 10;
+        this.criterion = {
+            limit: 10,
+            type: '',
+            value: '',
+        };
     }
     onWindowScroll() {
         if (document.scrollingElement.scrollHeight -
-            document.scrollingElement.scrollTop ===
-            document.scrollingElement.clientHeight) {
-            this.limit += 10;
+            document.scrollingElement.scrollTop -
+            document.scrollingElement.clientHeight <
+            50 &&
+            this.picturesUploaded &&
+            this.currentPosition < document.scrollingElement.scrollTop) {
+            this.picturesUploaded = false;
+            this.criterion.limit += 10;
             this.loadPictures();
         }
+        this.currentPosition = document.scrollingElement.scrollTop;
     }
     ngOnInit() {
+        this.store$.dispatch(Object(src_app_store_picture_list_actions__WEBPACK_IMPORTED_MODULE_1__["clearAllPicture"])());
+        this.pictureListSubscription$ = this.pictureList$.subscribe(() => {
+            this.picturesUploaded = true;
+        });
         this.loadPictures();
     }
     loadPictures() {
-        let type = '';
-        let value = '';
-        if (this.author) {
-            type = 'author';
-            value = this.author;
-        }
-        const criterion = {
-            limit: this.limit,
-            type,
-            value,
-        };
+        const criterion = Object.assign({}, this.criterion);
         this.store$.dispatch(Object(src_app_store_picture_list_actions__WEBPACK_IMPORTED_MODULE_1__["loadPictures"])({ criterion }));
+    }
+    loadPicturesByAuthor() {
+        if (this.author) {
+            this.criterion.type = 'author';
+            this.criterion.value = this.author;
+        }
+        else {
+            this.criterion.type = '';
+            this.criterion.value = '';
+        }
+        this.loadPictures();
     }
     trackByObject(index, item) {
         return index;
     }
     ngOnDestroy() {
-        this.store$.dispatch(Object(src_app_store_picture_list_actions__WEBPACK_IMPORTED_MODULE_1__["clearAllPicture"])());
+        this.pictureListSubscription$.unsubscribe();
     }
 }
 GalleryComponent.ɵfac = function GalleryComponent_Factory(t) { return new (t || GalleryComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdirectiveInject"](_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["Store"])); };
@@ -148,7 +162,7 @@ GalleryComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdefineC
         _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵlistener"]("ngModelChange", function GalleryComponent_Template_input_ngModelChange_2_listener($event) { return ctx.author = $event; });
         _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](3, "button", 2);
-        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵlistener"]("click", function GalleryComponent_Template_button_click_3_listener() { return ctx.loadPictures(); });
+        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵlistener"]("click", function GalleryComponent_Template_button_click_3_listener() { return ctx.loadPicturesByAuthor(); });
         _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtext"](4, "Search");
         _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementEnd"]();

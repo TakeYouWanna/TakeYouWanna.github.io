@@ -29,7 +29,7 @@ __webpack_require__.r(__webpack_exports__);
 const pictureListInitialState = {
     pictureList: {},
 };
-const pictureListReducer = Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["createReducer"])(pictureListInitialState, Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["on"])(_actions__WEBPACK_IMPORTED_MODULE_1__["loadPicturesSuccess"], (state, { newPictureList }) => (Object.assign(Object.assign({}, state), { pictureList: newPictureList }))), Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["on"])(_actions__WEBPACK_IMPORTED_MODULE_1__["clearAllPicture"], (state) => (Object.assign(Object.assign({}, state), { pictureList: {} }))));
+const pictureListReducer = Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["createReducer"])(pictureListInitialState, Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["on"])(_actions__WEBPACK_IMPORTED_MODULE_1__["loadPicturesSuccess"], (state, { newPictureList }) => (Object.assign(Object.assign({}, state), { pictureList: newPictureList }))), Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["on"])(_actions__WEBPACK_IMPORTED_MODULE_1__["clearAllPicture"], (state) => (Object.assign(Object.assign({}, state), { pictureList: {} }))), Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["on"])(_actions__WEBPACK_IMPORTED_MODULE_1__["loadPictures"], (state) => (Object.assign({}, state))));
 
 
 /***/ }),

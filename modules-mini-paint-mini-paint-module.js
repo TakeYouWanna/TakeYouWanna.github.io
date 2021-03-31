@@ -205,10 +205,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var src_app_store_user_selectors__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! src/app/store/user/selectors */ "ilQm");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/core */ "fXoL");
 /* harmony import */ var src_app_shared_services_drawing_drawing_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! src/app/shared/services/drawing/drawing.service */ "5s1M");
-/* harmony import */ var src_app_shared_services_firebase_firestore_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! src/app/shared/services/firebase/firestore.service */ "dK64");
-/* harmony import */ var _drawing_tools_drawing_tools_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./drawing-tools/drawing-tools.component */ "f2O/");
-/* harmony import */ var _drawing_properties_drawing_properties_component__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./drawing-properties/drawing-properties.component */ "0KI4");
-
+/* harmony import */ var _drawing_tools_drawing_tools_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./drawing-tools/drawing-tools.component */ "f2O/");
+/* harmony import */ var _drawing_properties_drawing_properties_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./drawing-properties/drawing-properties.component */ "0KI4");
 
 
 
@@ -219,10 +217,9 @@ __webpack_require__.r(__webpack_exports__);
 
 const _c0 = ["canvas"];
 class MiniPaintComponent {
-    constructor(drawingService, store$, firestore) {
+    constructor(drawingService, store$) {
         this.drawingService = drawingService;
         this.store$ = store$;
-        this.firestore = firestore;
         this.uid$ = this.store$.pipe(Object(_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["select"])(src_app_store_user_selectors__WEBPACK_IMPORTED_MODULE_2__["selectUserUid"]));
         this.saving = false;
     }
@@ -250,7 +247,7 @@ class MiniPaintComponent {
         this.store$.dispatch(Object(src_app_store_picture_list_actions__WEBPACK_IMPORTED_MODULE_1__["addPicture"])({ pictureSrc }));
     }
 }
-MiniPaintComponent.ɵfac = function MiniPaintComponent_Factory(t) { return new (t || MiniPaintComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdirectiveInject"](src_app_shared_services_drawing_drawing_service__WEBPACK_IMPORTED_MODULE_4__["DrawingService"]), _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdirectiveInject"](_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["Store"]), _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdirectiveInject"](src_app_shared_services_firebase_firestore_service__WEBPACK_IMPORTED_MODULE_5__["FirestoreService"])); };
+MiniPaintComponent.ɵfac = function MiniPaintComponent_Factory(t) { return new (t || MiniPaintComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdirectiveInject"](src_app_shared_services_drawing_drawing_service__WEBPACK_IMPORTED_MODULE_4__["DrawingService"]), _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdirectiveInject"](_ngrx_store__WEBPACK_IMPORTED_MODULE_0__["Store"])); };
 MiniPaintComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdefineComponent"]({ type: MiniPaintComponent, selectors: [["app-mini-paint"]], viewQuery: function MiniPaintComponent_Query(rf, ctx) { if (rf & 1) {
         _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵviewQuery"](_c0, 1);
     } if (rf & 2) {
@@ -268,7 +265,7 @@ MiniPaintComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdefin
         _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("toolName", ctx.toolName);
         _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵadvance"](3);
         _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("figureForm", ctx.figureProperties)("textForm", ctx.textProperties);
-    } }, directives: [_drawing_tools_drawing_tools_component__WEBPACK_IMPORTED_MODULE_6__["DrawingToolsComponent"], _drawing_properties_drawing_properties_component__WEBPACK_IMPORTED_MODULE_7__["DrawingPropertiesComponent"]], styles: ["canvas[_ngcontent-%COMP%] {\n  width: 700px;\n  height: 550px;\n  box-sizing: border-box;\n}\n\napp-drawing-tools[_ngcontent-%COMP%], app-drawing-properties[_ngcontent-%COMP%] {\n  display: flex;\n  flex-direction: column;\n  padding: 15px;\n  justify-content: space-around;\n  align-items: flex-start;\n  box-sizing: border-box;\n  height: 550px;\n}\n\n@media only screen and (max-width: 1050px) {\n  app-drawing-tools[_ngcontent-%COMP%], app-drawing-properties[_ngcontent-%COMP%] {\n    flex-direction: row;\n    width: 700px;\n    height: auto;\n    font-size: 20pt;\n  }\n}\n\n@media only screen and (max-width: 768px) {\n  canvas[_ngcontent-%COMP%] {\n    width: 320px;\n    height: 320px;\n  }\n\n  app-drawing-tools[_ngcontent-%COMP%], app-drawing-properties[_ngcontent-%COMP%] {\n    padding: 10px;\n    flex-direction: row;\n    align-items: flex-start;\n    width: 320px;\n    height: auto;\n    font-size: 10pt;\n  }\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uXFwuLlxcLi5cXC4uXFxtaW5pLXBhaW50LmNvbXBvbmVudC5zY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUlBO0VBQ0UsWUFKWTtFQUtaLGFBTmE7RUFPYixzQkFBQTtBQUhGOztBQU1BOztFQUVFLGFBQUE7RUFDQSxzQkFBQTtFQUNBLGFBWlE7RUFhUiw2QkFBQTtFQUNBLHVCQUFBO0VBQ0Esc0JBQUE7RUFDQSxhQWxCYTtBQWVmOztBQU1BO0VBQ0U7O0lBRUUsbUJBQUE7SUFDQSxZQXhCVTtJQXlCVixZQUFBO0lBQ0EsZUFBQTtFQUhGO0FBQ0Y7O0FBTUE7RUFDRTtJQUNFLFlBQUE7SUFDQSxhQUFBO0VBSkY7O0VBT0E7O0lBRUUsYUFBQTtJQUNBLG1CQUFBO0lBQ0EsdUJBQUE7SUFDQSxZQUFBO0lBQ0EsWUFBQTtJQUNBLGVBQUE7RUFKRjtBQUNGIiwiZmlsZSI6Im1pbmktcGFpbnQuY29tcG9uZW50LnNjc3MiLCJzb3VyY2VzQ29udGVudCI6WyIkY2FudmFzSGVpZ2h0OiA1NTBweDtcclxuJGNhbnZhc1dpZHRoOiA3MDBweDtcclxuJHBhZGRpbmc6IDE1cHg7XHJcblxyXG5jYW52YXMge1xyXG4gIHdpZHRoOiAkY2FudmFzV2lkdGg7XHJcbiAgaGVpZ2h0OiAkY2FudmFzSGVpZ2h0O1xyXG4gIGJveC1zaXppbmc6IGJvcmRlci1ib3g7XHJcbn1cclxuXHJcbmFwcC1kcmF3aW5nLXRvb2xzLFxyXG5hcHAtZHJhd2luZy1wcm9wZXJ0aWVzIHtcclxuICBkaXNwbGF5OiBmbGV4O1xyXG4gIGZsZXgtZGlyZWN0aW9uOiBjb2x1bW47XHJcbiAgcGFkZGluZzogJHBhZGRpbmc7XHJcbiAganVzdGlmeS1jb250ZW50OiBzcGFjZS1hcm91bmQ7XHJcbiAgYWxpZ24taXRlbXM6IGZsZXgtc3RhcnQ7XHJcbiAgYm94LXNpemluZzogYm9yZGVyLWJveDtcclxuICBoZWlnaHQ6ICRjYW52YXNIZWlnaHQ7XHJcbn1cclxuXHJcbkBtZWRpYSBvbmx5IHNjcmVlbiBhbmQgKG1heC13aWR0aDogJGNhbnZhc1dpZHRoICogMS41KSB7XHJcbiAgYXBwLWRyYXdpbmctdG9vbHMsXHJcbiAgYXBwLWRyYXdpbmctcHJvcGVydGllcyB7XHJcbiAgICBmbGV4LWRpcmVjdGlvbjogcm93O1xyXG4gICAgd2lkdGg6ICRjYW52YXNXaWR0aDtcclxuICAgIGhlaWdodDogYXV0bztcclxuICAgIGZvbnQtc2l6ZTogMjBwdDtcclxuICB9XHJcbn1cclxuXHJcbkBtZWRpYSBvbmx5IHNjcmVlbiBhbmQgKG1heC13aWR0aDogNzY4cHgpIHtcclxuICBjYW52YXMge1xyXG4gICAgd2lkdGg6IDMyMHB4O1xyXG4gICAgaGVpZ2h0OiAzMjBweDtcclxuICB9XHJcblxyXG4gIGFwcC1kcmF3aW5nLXRvb2xzLFxyXG4gIGFwcC1kcmF3aW5nLXByb3BlcnRpZXMge1xyXG4gICAgcGFkZGluZzogMTBweDtcclxuICAgIGZsZXgtZGlyZWN0aW9uOiByb3c7XHJcbiAgICBhbGlnbi1pdGVtczogZmxleC1zdGFydDtcclxuICAgIHdpZHRoOiAzMjBweDtcclxuICAgIGhlaWdodDogYXV0bztcclxuICAgIGZvbnQtc2l6ZTogMTBwdDtcclxuICB9XHJcbn1cclxuIl19 */"], changeDetection: 0 });
+    } }, directives: [_drawing_tools_drawing_tools_component__WEBPACK_IMPORTED_MODULE_5__["DrawingToolsComponent"], _drawing_properties_drawing_properties_component__WEBPACK_IMPORTED_MODULE_6__["DrawingPropertiesComponent"]], styles: ["canvas[_ngcontent-%COMP%] {\n  width: 700px;\n  height: 550px;\n  box-sizing: border-box;\n}\n\napp-drawing-tools[_ngcontent-%COMP%], app-drawing-properties[_ngcontent-%COMP%] {\n  display: flex;\n  flex-direction: column;\n  padding: 15px;\n  justify-content: space-around;\n  align-items: flex-start;\n  box-sizing: border-box;\n  height: 550px;\n}\n\n@media only screen and (max-width: 1050px) {\n  app-drawing-tools[_ngcontent-%COMP%], app-drawing-properties[_ngcontent-%COMP%] {\n    flex-direction: row;\n    width: 700px;\n    height: auto;\n    font-size: 20pt;\n  }\n}\n\n@media only screen and (max-width: 768px) {\n  canvas[_ngcontent-%COMP%] {\n    width: 320px;\n    height: 320px;\n  }\n\n  app-drawing-tools[_ngcontent-%COMP%], app-drawing-properties[_ngcontent-%COMP%] {\n    padding: 10px;\n    flex-direction: row;\n    align-items: flex-start;\n    width: 320px;\n    height: auto;\n    font-size: 10pt;\n  }\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uXFwuLlxcLi5cXC4uXFxtaW5pLXBhaW50LmNvbXBvbmVudC5zY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUlBO0VBQ0UsWUFKWTtFQUtaLGFBTmE7RUFPYixzQkFBQTtBQUhGOztBQU1BOztFQUVFLGFBQUE7RUFDQSxzQkFBQTtFQUNBLGFBWlE7RUFhUiw2QkFBQTtFQUNBLHVCQUFBO0VBQ0Esc0JBQUE7RUFDQSxhQWxCYTtBQWVmOztBQU1BO0VBQ0U7O0lBRUUsbUJBQUE7SUFDQSxZQXhCVTtJQXlCVixZQUFBO0lBQ0EsZUFBQTtFQUhGO0FBQ0Y7O0FBTUE7RUFDRTtJQUNFLFlBQUE7SUFDQSxhQUFBO0VBSkY7O0VBT0E7O0lBRUUsYUFBQTtJQUNBLG1CQUFBO0lBQ0EsdUJBQUE7SUFDQSxZQUFBO0lBQ0EsWUFBQTtJQUNBLGVBQUE7RUFKRjtBQUNGIiwiZmlsZSI6Im1pbmktcGFpbnQuY29tcG9uZW50LnNjc3MiLCJzb3VyY2VzQ29udGVudCI6WyIkY2FudmFzSGVpZ2h0OiA1NTBweDtcclxuJGNhbnZhc1dpZHRoOiA3MDBweDtcclxuJHBhZGRpbmc6IDE1cHg7XHJcblxyXG5jYW52YXMge1xyXG4gIHdpZHRoOiAkY2FudmFzV2lkdGg7XHJcbiAgaGVpZ2h0OiAkY2FudmFzSGVpZ2h0O1xyXG4gIGJveC1zaXppbmc6IGJvcmRlci1ib3g7XHJcbn1cclxuXHJcbmFwcC1kcmF3aW5nLXRvb2xzLFxyXG5hcHAtZHJhd2luZy1wcm9wZXJ0aWVzIHtcclxuICBkaXNwbGF5OiBmbGV4O1xyXG4gIGZsZXgtZGlyZWN0aW9uOiBjb2x1bW47XHJcbiAgcGFkZGluZzogJHBhZGRpbmc7XHJcbiAganVzdGlmeS1jb250ZW50OiBzcGFjZS1hcm91bmQ7XHJcbiAgYWxpZ24taXRlbXM6IGZsZXgtc3RhcnQ7XHJcbiAgYm94LXNpemluZzogYm9yZGVyLWJveDtcclxuICBoZWlnaHQ6ICRjYW52YXNIZWlnaHQ7XHJcbn1cclxuXHJcbkBtZWRpYSBvbmx5IHNjcmVlbiBhbmQgKG1heC13aWR0aDogJGNhbnZhc1dpZHRoICogMS41KSB7XHJcbiAgYXBwLWRyYXdpbmctdG9vbHMsXHJcbiAgYXBwLWRyYXdpbmctcHJvcGVydGllcyB7XHJcbiAgICBmbGV4LWRpcmVjdGlvbjogcm93O1xyXG4gICAgd2lkdGg6ICRjYW52YXNXaWR0aDtcclxuICAgIGhlaWdodDogYXV0bztcclxuICAgIGZvbnQtc2l6ZTogMjBwdDtcclxuICB9XHJcbn1cclxuXHJcbkBtZWRpYSBvbmx5IHNjcmVlbiBhbmQgKG1heC13aWR0aDogNzY4cHgpIHtcclxuICBjYW52YXMge1xyXG4gICAgd2lkdGg6IDMyMHB4O1xyXG4gICAgaGVpZ2h0OiAzMjBweDtcclxuICB9XHJcblxyXG4gIGFwcC1kcmF3aW5nLXRvb2xzLFxyXG4gIGFwcC1kcmF3aW5nLXByb3BlcnRpZXMge1xyXG4gICAgcGFkZGluZzogMTBweDtcclxuICAgIGZsZXgtZGlyZWN0aW9uOiByb3c7XHJcbiAgICBhbGlnbi1pdGVtczogZmxleC1zdGFydDtcclxuICAgIHdpZHRoOiAzMjBweDtcclxuICAgIGhlaWdodDogYXV0bztcclxuICAgIGZvbnQtc2l6ZTogMTBwdDtcclxuICB9XHJcbn1cclxuIl19 */"], changeDetection: 0 });
 
 
 /***/ }),
@@ -325,18 +322,19 @@ __webpack_require__.r(__webpack_exports__);
 
 
 class Coordinates {
-    getDiffCurrentPosition(event, canvas) {
-        if (event instanceof MouseEvent) {
-            return this.getDiffCurrentMouseCoordinates(event, canvas);
+    getDiffCurrentPosition($event, canvas) {
+        if ($event instanceof MouseEvent) {
+            return this.getDiffCurrentMouseCoordinates(canvas);
         }
-        return this.getDiffCurrentTouchCoordinates(event, canvas);
+        return this.getDiffCurrentTouchCoordinates(canvas);
     }
-    getDiffCurrentTouchCoordinates(event, canvas) {
+    getDiffCurrentTouchCoordinates(canvas) {
         const touchMove$ = Object(rxjs__WEBPACK_IMPORTED_MODULE_0__["fromEvent"])(canvas.nativeElement, 'touchmove');
         const touchEnd$ = Object(rxjs__WEBPACK_IMPORTED_MODULE_0__["fromEvent"])(canvas.nativeElement, 'touchend');
         const touchCancel$ = Object(rxjs__WEBPACK_IMPORTED_MODULE_0__["fromEvent"])(canvas.nativeElement, 'touchcancel');
         return touchMove$.pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["map"])(($event) => {
             if ($event instanceof TouchEvent) {
+                $event.preventDefault();
                 return {
                     x: $event.changedTouches[0].clientX -
                         canvas.nativeElement.offsetLeft,
@@ -349,12 +347,13 @@ class Coordinates {
             };
         }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["pairwise"])(), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["takeUntil"])(touchEnd$), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["takeUntil"])(touchCancel$));
     }
-    getDiffCurrentMouseCoordinates(event, canvas) {
+    getDiffCurrentMouseCoordinates(canvas) {
         const mouseMove$ = Object(rxjs__WEBPACK_IMPORTED_MODULE_0__["fromEvent"])(canvas.nativeElement, 'mousemove');
         const mouseUp$ = Object(rxjs__WEBPACK_IMPORTED_MODULE_0__["fromEvent"])(canvas.nativeElement, 'mouseup');
         const mouseOut$ = Object(rxjs__WEBPACK_IMPORTED_MODULE_0__["fromEvent"])(canvas.nativeElement, 'mouseout');
         return mouseMove$.pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["map"])(($event) => {
             if ($event instanceof MouseEvent) {
+                $event.preventDefault();
                 return {
                     x: $event.offsetX,
                     y: $event.offsetY,
@@ -366,16 +365,16 @@ class Coordinates {
             };
         }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["pairwise"])(), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["takeUntil"])(mouseUp$), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["takeUntil"])(mouseOut$));
     }
-    getCoords(event, canvas) {
-        if (event instanceof MouseEvent) {
+    getCoords($event, canvas) {
+        if ($event instanceof MouseEvent) {
             return {
-                x: event.offsetX,
-                y: event.offsetY,
+                x: $event.offsetX,
+                y: $event.offsetY,
             };
         }
         return {
-            x: event.changedTouches[0].clientX - canvas.nativeElement.offsetLeft,
-            y: event.changedTouches[0].clientY - canvas.nativeElement.offsetTop,
+            x: $event.changedTouches[0].clientX - canvas.nativeElement.offsetLeft,
+            y: $event.changedTouches[0].clientY - canvas.nativeElement.offsetTop,
         };
     }
 }
