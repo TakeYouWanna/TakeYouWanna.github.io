@@ -338,7 +338,6 @@ class AppComponent {
         this.store$ = store$;
         this.componentFactoryResolver = componentFactoryResolver;
         this.changeDetectorRef = changeDetectorRef;
-        this.title = 'Innowise-lab-internship-level2';
     }
     ngOnInit() {
         this.store$.dispatch(Object(_store_user_actions__WEBPACK_IMPORTED_MODULE_4__["initializeUser"])());
